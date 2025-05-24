@@ -1,0 +1,13 @@
+[package]
+name = "mnist"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "mnist"
+path = "src/bin/mnist.rs"
+
+[workspace]
+
+[dependencies]
+risc0-zkvm = { version = "^2.0.1", default-features = false, features = ['std'] }
