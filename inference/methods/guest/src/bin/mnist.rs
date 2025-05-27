@@ -1,5 +1,3 @@
-// guest/src/bin/mnist.rs
-
 use risc0_zkvm::guest::env;
 
 mod weights {

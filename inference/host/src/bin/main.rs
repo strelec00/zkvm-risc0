@@ -16,17 +16,12 @@ mod sample {
     include!("input/sample_input.rs"); // const SAMPLE: [i32; 784]
 }
 
-use host::run_inference;
-use mnist_methods::MNIST_ID;
+use host::{export_receipt};
 
 fn main() {
     tracing_subscriber::fmt()
         .with_env_filter(tracing_subscriber::EnvFilter::from_default_env())
         .init();
 
-    let (receipt, predicted_digit) = run_inference(&sample::SAMPLE);
-    receipt.verify(MNIST_ID).expect("Verification failed.");
-
-    println!("Proof is valid and inference is done!");
-    println!("Prepoznati broj je: {}", predicted_digit);
+    export_receipt(&sample::SAMPLE);
 }
