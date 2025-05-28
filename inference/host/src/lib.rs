@@ -1,40 +1,43 @@
 use mnist_methods::MNIST_ELF;
-use risc0_zkvm::{default_prover, seal_to_json, ExecutorEnv, Receipt};
+use risc0_zkvm::{ExecutorEnv, ProverOpts, Receipt};
 use risc0_zkvm::serde::from_slice;
+use risc0_groth16::to_json;
 use std::fs::File;
 use std::io::{Cursor, Write};
 
-
 pub fn export_receipt(input: &[i32; 784]) {
-    // Build execution environment
+    // Izgradnja izvršnog okruženja
     let env = ExecutorEnv::builder()
         .write(&input.to_vec()).unwrap()
         .build().unwrap();
 
-    // Prove the computation
-    let prover = default_prover();
-    let session = prover.prove(env, MNIST_ELF).unwrap();
+    // Konfiguriranje opcija prover-a za Groth16
+    let prover_opts = ProverOpts::groth16();
+
+    // Provođenje dokazivanja
+    let prover = risc0_zkvm::default_prover();
+    let session = prover.prove_with_opts(env, MNIST_ELF, &prover_opts).unwrap();
     let receipt: Receipt = session.receipt;
 
-    // Deserialize predicted value from receipt journal
+    // Deserijalizacija predviđene vrijednosti iz dnevnika
     let predicted: i32 = from_slice(&*receipt.journal.bytes).unwrap();
-    println!("Predicted: {}", predicted);
+    println!("Predviđeno: {}", predicted);
 
-    // Serialize receipt to bytes
+    // Serijalizacija dokaza u bajtove
     let encoded_receipt = bincode::serialize(&receipt).unwrap();
 
-    // Write the binary receipt file (optional)
+    // Pisanje binarnog dokaza u datoteku
     let mut bin_file = File::create("proof.bin").unwrap();
     bin_file.write_all(&encoded_receipt).unwrap();
 
-    // Create a Cursor reader over the serialized receipt bytes
+    // Kreiranje kursora za čitanje serijaliziranih bajtova
     let reader = Cursor::new(encoded_receipt);
 
-    // Open a file for JSON output
+    // Otvaranje datoteke za JSON izlaz
     let mut json_file = File::create("proof.json").unwrap();
 
-    // Convert the receipt binary to JSON and write to file
-    seal_to_json(reader, &mut json_file).unwrap();
+    // Pretvaranje binarnog dokaza u JSON i pisanje u datoteku
+    to_json(reader, &mut json_file).unwrap();
 
-    // Now the proof.json contains the JSON version of the receipt
+    // Sada proof.json sadrži JSON verziju dokaza
 }

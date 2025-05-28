@@ -16,7 +16,7 @@ mod sample {
     include!("input/sample_input.rs"); // const SAMPLE: [i32; 784]
 }
 
-use host::{export_receipt};
+use host::export_receipt;
 
 fn main() {
     tracing_subscriber::fmt()
