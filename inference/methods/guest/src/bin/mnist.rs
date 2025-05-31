@@ -13,7 +13,7 @@ fn relu(x: i32) -> i32 {
 
 fn main() {
     let input_vec: Vec<i32> = env::read();
-    println!("Prva tri inputa: {}, {}, {}", input_vec[0], input_vec[1], input_vec[2]);
+
 
     let input: [i32; 784] = input_vec.try_into().expect("Expected input of length 784");
 

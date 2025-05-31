@@ -1,0 +1,65 @@
+
+thread 'main' panicked at host/src/lib.rs:19:72:
+called `Result::unwrap()` on an `Err` value: docker returned failure exit code: Some(1)
+
+Stack backtrace:
+   0: anyhow::error::<impl anyhow::Error>::msg
+             at /home/strelec00/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/anyhow-1.0.98/src/backtrace.rs:27:14
+   1: risc0_groth16::docker::stark_to_snark
+             at /home/strelec00/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/risc0-groth16-2.0.1/src/docker.rs:66:9
+   2: risc0_zkvm::host::server::prove::ProverServer::succinct_to_groth16
+             at /home/strelec00/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/risc0-zkvm-2.0.2/src/host/server/prove/mod.rs:167:20
+   3: <risc0_zkvm::host::server::prove::prover_impl::ProverImpl as risc0_zkvm::host::server::prove::ProverServer>::prove_session
+             at /home/strelec00/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/risc0-zkvm-2.0.2/src/host/server/prove/prover_impl.rs:201:39
+   4: <risc0_zkvm::host::server::prove::prover_impl::ProverImpl as risc0_zkvm::host::server::prove::ProverServer>::prove_with_ctx
+             at /home/strelec00/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/risc0-zkvm-2.0.2/src/host/server/prove/prover_impl.rs:62:9
+   5: <risc0_zkvm::host::client::prove::local::LocalProver as risc0_zkvm::host::client::prove::Prover>::prove_with_ctx
+             at /home/strelec00/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/risc0-zkvm-2.0.2/src/host/client/prove/local.rs:47:9
+   6: risc0_zkvm::host::client::prove::Prover::prove_with_opts
+             at /home/strelec00/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/risc0-zkvm-2.0.2/src/host/client/prove/mod.rs:95:9
+   7: host::export_receipt
+             at ./host/src/lib.rs:19:19
+   8: core::ops::function::FnOnce::call_once
+             at /home/strelec00/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ops/function.rs:250:5
+   9: std::sys::backtrace::__rust_begin_short_backtrace
+             at /home/strelec00/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/sys/backtrace.rs:152:18
+  10: std::rt::lang_start::{{closure}}
+             at /home/strelec00/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/rt.rs:199:18
+  11: core::ops::function::impls::<impl core::ops::function::FnOnce<A> for &F>::call_once
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/core/src/ops/function.rs:284:13
+  12: std::panicking::try::do_call
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panicking.rs:589:40
+  13: std::panicking::try
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panicking.rs:552:19
+  14: std::panic::catch_unwind
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panic.rs:359:14
+  15: std::rt::lang_start_internal::{{closure}}
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/rt.rs:168:24
+  16: std::panicking::try::do_call
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panicking.rs:589:40
+  17: std::panicking::try
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panicking.rs:552:19
+  18: std::panic::catch_unwind
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panic.rs:359:14
+  19: std::rt::lang_start_internal
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/rt.rs:164:5
+  20: main
+  21: __libc_start_call_main
+             at ./csu/../sysdeps/nptl/libc_start_call_main.h:58:16
+  22: __libc_start_main_impl
+             at ./csu/../csu/libc-start.c:360:3
+  23: _start
+stack backtrace:
+   0: __rustc::rust_begin_unwind
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/std/src/panicking.rs:697:5
+   1: core::panicking::panic_fmt
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/core/src/panicking.rs:75:14
+   2: core::result::unwrap_failed
+             at /rustc/17067e9ac6d7ecb70e50f92c1944e545188d2359/library/core/src/result.rs:1704:5
+   3: core::result::Result<T,E>::unwrap
+             at /home/strelec00/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/result.rs:1109:23
+   4: host::export_receipt
+             at ./host/src/lib.rs:19:19
+   5: core::ops::function::FnOnce::call_once
+             at /home/strelec00/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/ops/function.rs:250:5
+note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
