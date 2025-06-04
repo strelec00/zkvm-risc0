@@ -8,5 +8,5 @@ mnist-methods = { path = "../methods" }
 risc0-zkvm = { version = "2.0.1", features = ["prove", "metal"]  }
 tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
 bincode = "1.3.3"
-risc0-groth16 = "2.0"
+risc0-groth16 = "2.0.1"
 
