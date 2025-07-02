@@ -1,0 +1,10 @@
+{
+  "architecture": "aarch64",
+  "image_id": "mnist_prediction_4",
+  "note": "Groth16 not available on this platform, using STARK proof instead",
+  "platform": "macos",
+  "prediction": 4,
+  "proof_system": "risc0_stark_fallback",
+  "proof_type": "STARK",
+  "timestamp": "2025-07-02T15:17:59.505462+00:00"
+}
