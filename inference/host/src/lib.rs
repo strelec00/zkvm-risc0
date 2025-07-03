@@ -1,5 +1,7 @@
-use mnist_methods::MNIST_ELF;
-use risc0_zkvm::{ExecutorEnv, ProverOpts, Receipt, InnerReceipt};
+use mnist_methods::MNIST_ELF as METHOD_ELF;
+use risc0_zkvm::{
+    default_prover, ExecutorEnv, InnerReceipt, ProverOpts, VerifierContext,
+};
 use risc0_zkvm::serde::from_slice;
 
 use serde_json::json;
@@ -12,25 +14,31 @@ pub fn export_receipt(input: &[i32; 784]) {
         .write(&input.to_vec()).unwrap()
         .build().unwrap();
 
-    // 2️⃣ Configure prover options for Groth16 output
-    let prover_opts = ProverOpts::groth16();
+    // 2️⃣ Run prover with Groth16 config and explicit context
+    let prover = default_prover();
 
-    // 3️⃣ Run prover with Groth16 option
-    let prover = risc0_zkvm::default_prover();
-    let session = prover.prove_with_opts(env, MNIST_ELF, &prover_opts).unwrap();
-    let receipt: Receipt = session.receipt;
+    let prove_info = prover
+        .prove_with_ctx(
+            env,
+            &VerifierContext::default(),
+            METHOD_ELF,
+            &ProverOpts::groth16(),
+        )
+        .expect("Proving failed");
 
-    // 4️⃣ Decode predicted digit from the journal
+    let receipt = prove_info.receipt;
+
+    // 3️⃣ Decode predicted digit from the journal
     let predicted: i32 = from_slice(&receipt.journal.bytes).unwrap();
     println!("Predviđeno: {}", predicted);
 
-    // 5️⃣ Extract the Groth16 seal
+    // 4️⃣ Extract Groth16 seal
     let groth16_seal = match receipt.inner {
         InnerReceipt::Groth16(ref g) => g.seal.clone(),
         _ => panic!("Očekivao Groth16 receipt, dobio nešto drugo."),
     };
 
-    // 6️⃣ Write the seal to seal.json for use with the Groth16 prover Docker
+    // 5️⃣ Write seal to seal.json
     let seal_json = json!({
         "seal": base64::encode(&groth16_seal)
     });
